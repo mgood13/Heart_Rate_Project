@@ -1,6 +1,7 @@
 import csv
 import os
 
+
 def fileReader():
     errornum = 0
     outdictionary = {}
@@ -11,9 +12,8 @@ def fileReader():
         with open(f, 'r') as csv1:
             errornum = 0
 
-
             try:
-                dialect = csv.Sniffer().sniff(csv1.read(),delimiters=',')
+                dialect = csv.Sniffer().sniff(csv1.read(), delimiters=',')
             except csv.Error:
                 print('Not a csv file')
                 errornum = 1
@@ -23,13 +23,9 @@ def fileReader():
                 reader = csv.reader(csv1, dialect)
 
                 templist = [row for row in reader]
-                outdictionary[f] = tuple(templist)
+                outdictionary[f] = templist
 
     return outdictionary
-
-
-
-
 
 
 if __name__ == "__main__":
