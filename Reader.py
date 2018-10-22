@@ -6,6 +6,7 @@ def fileReader():
     errornum = 0
     outdictionary = {}
     templist = []
+    count = 0
 
     files = [f for f in os.listdir('.') if f.endswith(".csv")]
     for f in files:
@@ -19,12 +20,11 @@ def fileReader():
                 errornum = 1
 
             if errornum == 0:
-                csv1.seek(0)
-                reader = csv.reader(csv1, dialect)
+                outdictionary[f] = dialect
+                count += 1
 
-                templist = [row for row in reader]
-                outdictionary[f] = templist
 
+    outdictionary['FileNumber'] = count
     return outdictionary
 
 
