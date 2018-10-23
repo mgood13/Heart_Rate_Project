@@ -10,9 +10,9 @@ def fileReader():
     outdictionary = csvChecker(files)
     return outdictionary
 
-def csvFinder():
+def csvFinder(dir = '.'):
     # This method finds all files that end in .csv
-    files = [f for f in os.listdir('.') if f.endswith(".csv")]
+    files = [f for f in os.listdir(dir) if f.endswith(".csv")]
     return files
 
 def csvChecker(files):
