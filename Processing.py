@@ -53,10 +53,8 @@ def fileProcessor():
                     beat_time.append(timelist[n])
 
 
-        print(count)
-        print(beat_time)
-
-
+    print(count)
+    print(beat_time)
 
 if __name__ == "__main__":
     result = fileProcessor()
