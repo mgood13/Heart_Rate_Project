@@ -34,6 +34,7 @@ def fileProcessor():
         threshold = diffmax * scaling
 
         beatcount, beat_time = beatCounter(timelen, diff_vec, threshold, timelist)
+        heartrate = heartRateCalc(beatcount, beat_time, duration, 0.5)
 
 
         metrics['voltage_extremes'] = (minvolt, maxvolt)
@@ -42,7 +43,8 @@ def fileProcessor():
         beat_time_array = np.array(beat_time)
         metrics['beats'] = beat_time_array
 
-    return outputdictionary
+
+    return metrics
 
 def fileParser(i, csv1, inputdictionary):
     timelist = []
@@ -71,7 +73,6 @@ def ECGMathCalc(timelist, voltagelist, timelen):
 
     # Determines duration of input signal
     duration = timelist[timelen-1] - timelist[0]
-    print(duration)
     return minvolt, maxvolt, duration
 
 def differentiator(timelen, voltagelist, timelist):
@@ -96,7 +97,22 @@ def beatCounter(timelen, diff_vec, threshold, timelist):
     return beatcount, beat_time
 
 
+def heartRateCalc(beatcount, beat_time, duration, usermin=1):
+    usersec = usermin * 60
+    if (usersec > duration):
+        ratio = duration/usersec
+        print("Longer")
+        print(beatcount/ratio/usermin)
+    else:
+        count = 0
+        for n in beat_time:
+            if (n < usersec):
+                count += 1
+        print("Shorter")
+        print(count/usermin)
+
+
+
 
 if __name__ == "__main__":
     result = fileProcessor()
-    print(result)

@@ -4,17 +4,13 @@ def test_csvFinder():
 
     assert test_files.count('test2') == 0
     assert test_files.count('test2.csv') == 1
+    assert test_files.count('false.csv') == 1
 
 
 
+def test_csvChecker():
+    from Reader import csvChecker
 
-
-
-
-
-
-
-#def test_csvChecker():
 
 
 
