@@ -39,12 +39,13 @@ def fileProcessor():
 
 
         metrics['voltage_extremes'] = (minvolt, maxvolt)
+        print(minvolt)
         metrics['duration'] = duration
         metrics['num_beats'] = beatcount
         # NO LONGER A NUMPY ARRAY
         beat_time_array = beat_time
         metrics['beats'] = beat_time_array
-        metrics['mean_hr_bpm'] = heartratecalc(beatcount, beat_time, duration)
+        metrics['mean_hr_bpm'] = heartrate
         jsonout(i, metrics)
     return metrics
 
