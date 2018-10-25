@@ -44,7 +44,6 @@ def csvchecker(files):
             try:
                 dialect = csv.Sniffer().sniff(csv1.read(), delimiters=',')
             except csv.Error:
-                print('Not a csv file')
                 errornum = 1
 
             if errornum == 0:
