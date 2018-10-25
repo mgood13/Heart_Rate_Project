@@ -51,7 +51,15 @@ def test_differentiator():
     diff_vec = differentiator(timelen, voltage, time)
     assert diff_vec == approx(test)
 
-#def test_beatcounter():
+
+def test_beatcounter():
+    from Reader import filereader
+    from Processing import fileprocessor
+    indictionary = filereader()
+    metrics = fileprocessor()
+
+    assert metrics['num_beats'] == 1
+
 
 
 
