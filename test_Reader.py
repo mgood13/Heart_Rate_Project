@@ -38,6 +38,7 @@ def test_csvchecker():
     assert 'words.csv' in check_files
     return check_files
 
+
 def test_floatcheck():
     """Tests the floatcheck function
 

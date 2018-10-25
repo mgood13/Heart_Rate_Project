@@ -60,7 +60,7 @@ def floatcheck(indictionary):
     :param indictionary: Dictionary that contains all real .csv file names and their dialect
     :return indictionary: Dictionary containing only the files that contain only numbers
     """
-    temp = 0
+    temp = []
     badlist = []
     for f in indictionary:
         if f == 'FileNumber':
