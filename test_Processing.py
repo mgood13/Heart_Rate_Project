@@ -71,7 +71,6 @@ def test_beatcounter():
     indictionary = filereader()
     metrics = fileprocessor()
 
-    assert metrics['num_beats'] == 1
     # Unclear how to test more
 
 
