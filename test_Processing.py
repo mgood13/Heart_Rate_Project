@@ -46,6 +46,7 @@ def test_differentiator():
     from Processing import fileparser
     from Processing import differentiator
     from pytest import approx
+    qualitylist = []
     test = [0, 0, 0, 0, 0, 0, 0, 8.333333333, -5, -3.333333333, -1.666666667, -5, 1.666666667, -1.666666667, -5, -2.5,
             -1.666666667, 5, 5, -6.666666667, -2.5, -3.333333333, 3.333333333, 8.333333333, 10, -6.666666667,
             -11.66666667, -5, -10, 5, -6.666666667, -1.666666667, -3.333333333, -7.5, 0, 0, 3.333333333, 3.333333333,
@@ -56,20 +57,28 @@ def test_differentiator():
             1.666666667, -5, -3.333333333, 5, 1.666666667, 3.333333333, 2.5, -3.333333333, -5, -1.666666667, 7.5,
             -6.666666667, 3.333333333]
     i = 'test_data1_short.csv'
-    qualitylist = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    for x in range(0, 100):
+        qualitylist.append(1)
     time, voltage = fileparser(i,qualitylist)
     timelen = len(time)
     diff_vec = differentiator(timelen, voltage, time)
     assert diff_vec == approx(test)
+    return time, voltage, timelen, diff_vec
 
 
 def test_beatcounter():
     from Reader import filereader
-    from Processing import fileprocessor
-    indictionary = filereader()
-    metrics = fileprocessor()
+    test_time = [0.2]
+    from Processing import beatcounter
+    time, voltage, timelen, diff_vec = test_differentiator()
+    beatcount, beat_time = beatcounter(timelen, diff_vec, time)
+    assert beatcount == 1
+    assert beat_time == test_time
+
+
+
+
+
 
     # Unclear how to test more
 
