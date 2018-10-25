@@ -5,13 +5,13 @@ import json
 import os.path
 
 
-def fileProcessor():
+def fileprocessor():
     inputdictionary = filereader()
     count = 0
     timelist = []
     voltagelist = []
     diff_vec = []
-    scaling = 0.5
+
     diffmax = 0
     threshold = 0
     beat_time = []
@@ -31,16 +31,11 @@ def fileProcessor():
 
         diff_vec = differentiator(timelen, voltagelist, timelist)
 
-
-        diffmax = max(diff_vec)
-        threshold = diffmax * scaling
-
-        beatcount, beat_time = beatcounter(timelen, diff_vec, threshold, timelist)
+        beatcount, beat_time = beatcounter(timelen, diff_vec, timelist)
         heartrate = heartratecalc(beatcount, beat_time, duration, 0.5)
 
-
+        metrics['Original File Name'] = i
         metrics['voltage_extremes'] = (minvolt, maxvolt)
-        print(minvolt)
         metrics['duration'] = duration
         metrics['num_beats'] = beatcount
         # NO LONGER A NUMPY ARRAY
@@ -94,12 +89,16 @@ def differentiator(timelen, voltagelist, timelist):
 
     return diff_vec
 
-def beatcounter(timelen, diff_vec, threshold, timelist):
+
+def beatcounter(timelen, diff_vec, timelist):
     beatcount = 0
+    scaling = 0.5
+    diffmax = max(diff_vec)
+    threshold = diffmax * scaling
     beat_time = []
     for n in range(0, (timelen - 1)):
         if n > 1:
-            if (diff_vec[n] > threshold and diff_vec[n - 1] < threshold and diff_vec[n-2] < threshold):
+            if diff_vec[n] > threshold and diff_vec[n - 1] < threshold and diff_vec[n-2] < threshold:
                 beatcount += 1
                 beat_time.append(timelist[n])
 
@@ -133,4 +132,4 @@ def jsonout(i, metrics):
 
 
 if __name__ == "__main__":
-    result = fileProcessor()
+    result = fileprocessor()
