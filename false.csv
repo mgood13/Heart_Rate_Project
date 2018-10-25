@@ -1,0 +1,2 @@
+This file is not really a csv file but it does have a .csv ending
+This should pass the csvFinder but fail the csvChecker
