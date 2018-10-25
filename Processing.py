@@ -23,7 +23,8 @@ def fileProcessor():
 #Loops through each of the files
     for i in inputdictionary:
 
-        timelist, voltagelist = fileparser(i)
+        qualitylist = inputdictionary[i]
+        timelist, voltagelist = fileparser(i, qualitylist)
 
 
         minvolt, maxvolt, duration, timelen = ecgmathcalc(timelist, voltagelist)
@@ -49,7 +50,7 @@ def fileProcessor():
         jsonout(i, metrics)
     return metrics
 
-def fileparser(i):
+def fileparser(i, qualitylist):
     timelist = []
     voltagelist = []
     count = 0
@@ -59,8 +60,11 @@ def fileparser(i):
 
     # Populates the lists for time and voltage
         for row in reader:
-            timelist.append(float(row[0]))
-            voltagelist.append(float(row[1]))
+            if(qualitylist[count] == 1):
+                timelist.append(float(row[0]))
+                voltagelist.append(float(row[1]))
+            else:
+                continue
             count += 1
 
     return timelist, voltagelist

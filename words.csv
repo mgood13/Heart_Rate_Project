@@ -6,3 +6,7 @@ as, words
 it, should
 fail, the
 check, function
+it, should
+also, fail
+the, float
+check, function

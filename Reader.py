@@ -55,19 +55,21 @@ def csvchecker(files):
 
 
 def floatcheck(indictionary):
-    """Method that checks to ensure all the valid .csv files contain only numbers
+    """Method that checks if every element in the csv is a number (or can be made one) and marks the rows with errors
 
     :param indictionary: Dictionary that contains all real .csv file names and their dialect
-    :return indictionary: Dictionary containing only the files that contain only numbers
+    :return indictionary: Dictionary containing all .csv files as keys.
+    The values are a list indicating good (1) and bad (0) rows.
     """
 
     temp = 0
     val = 0
     badlist = []
+
     for f in indictionary:
+        qualitylist = []
         count = 1
-        terror = 0
-        verror = 0
+        errornum = 0
         if f == 'FileNumber':
             continue
         else:
@@ -81,15 +83,20 @@ def floatcheck(indictionary):
                     try:
                         temp = float(row[0])
                         temp = float(row[1])
+                        qualitylist.append(1)
                     except ValueError:
-                        badlist.append(f)
-                        break
+                        qualitylist.append(0)
+                        errornum += 1
                     count += 1
+            indictionary[f] = qualitylist
+        if errornum > 10:
+            badlist.append(f)
 
     for n in badlist:
         if n in indictionary:
             indictionary.pop(n)
 
+    indictionary['FileNumber'] = len(indictionary) - 1
     return indictionary
 
 
