@@ -1,23 +1,29 @@
-def test_csvFinder():
-    from Reader import csvFinder
-    test_files = csvFinder('./unit_test_data')
+def test_csvfinder():
+    """Tests the csvfinder function
 
-    assert test_files.count('test2') == 0
-    assert test_files.count('test2.csv') == 1
+    :return:
+    """
+    from Reader import csvfinder
+    test_files = csvfinder('./unit_test_data')
 
-
-
-
-
-
-
-
-
-
-#def test_csvChecker():
-
+    assert test_files.count('poorform') == 0
+    assert test_files.count('wrongend') == 0
+    assert test_files.count('false.csv') == 1
+    assert test_files.count('mess.csv') == 1
+    assert test_files.count('poorform.csv') == 1
+    assert test_files.count('tab.csv') == 1
+    assert test_files.count('test_data1.csv') == 1
+    assert test_files.count('words.csv') == 1
 
 
+def test_csvchecker():
+    from Reader import csvchecker
+
+
+
+
+def test_floatcheck():
+    from Reader import floatcheck
 
 
 
