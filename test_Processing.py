@@ -59,7 +59,7 @@ def test_beatcounter():
     metrics = fileprocessor()
 
     assert metrics['num_beats'] == 1
-
+    # Unclear how to test more
 
 
 
