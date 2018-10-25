@@ -1,7 +1,7 @@
 def test_csvfinder():
     """Tests the csvfinder function
 
-    :return:
+    :return test_files: List of .csv files
     """
     from Reader import csvfinder
     test_files = csvfinder()
@@ -20,6 +20,10 @@ def test_csvfinder():
 
 
 def test_csvchecker():
+    """Tests the csvchecker function
+
+    :return check_files: Dictionary of files that have been checked to be valid .csv files
+    """
     from Reader import csvchecker
     test_files = test_csvfinder()
     check_files = csvchecker(test_files)
@@ -29,11 +33,21 @@ def test_csvchecker():
     assert 'tab.csv' not in check_files
     assert 'false.csv' not in check_files
     assert 'test2.csv' not in check_files
-
+    assert 'test1.csv' in check_files
+    assert 'test_data1.csv' in check_files
+    assert 'words.csv' in check_files
+    return check_files
 
 def test_floatcheck():
+    """Tests the floatcheck function
+
+    :return:
+    """
     from Reader import floatcheck
-
-
+    check_files = test_csvchecker()
+    float_files = floatcheck(check_files)
+    assert 'words.csv' not in float_files
+    assert 'test1.csv' not in float_files
+    assert 'test_data1.csv' in float_files
 
 
