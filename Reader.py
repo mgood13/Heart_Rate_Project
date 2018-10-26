@@ -5,7 +5,7 @@ import os
 def filereader():
     """The main file reader function.
 
-    :return finaldictionary: The dictionary containing the file names
+    :returns finaldictionary: The dictionary containing the file names
     and their dialect for the csv reader
     """
     outdictionary = {}

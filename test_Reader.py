@@ -1,7 +1,7 @@
 def test_csvfinder():
     """Tests that the finder finds all the correct files
 
-    :return test_files: List of .csv files
+    :returns test_files: List of .csv files
     """
     from Reader import csvfinder
     test_files = csvfinder()
@@ -22,7 +22,7 @@ def test_csvfinder():
 def test_csvchecker():
     """Tests that the check function discards and keeps correct files
 
-    :return check_files: Dictionary of valid csv files
+    :returns check_files: Dictionary of valid csv files
     """
     from Reader import csvchecker
     test_files = test_csvfinder()
@@ -42,7 +42,6 @@ def test_csvchecker():
 def test_floatcheck():
     """Tests to ensure that certain files are removed from the csv file list
 
-    :return:
     """
     from Reader import floatcheck
     check_files = test_csvchecker()
