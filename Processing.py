@@ -51,16 +51,29 @@ def fileparser(i, qualitylist):
     count = 0
 
     with open(i, 'r') as csv1:
+        abnormal = 0
+        discard = 0
+        addrow = 0
         reader = csv.reader(csv1)
-
     # Populates the lists for time and voltage
         for row in reader:
             if qualitylist[count] == 1:
                 timelist.append(float(row[0]))
                 voltagelist.append(float(row[1]))
+                if float(row[1]) > 20:
+                    abnormal = 1
             else:
+                discard += 1
+                count += 1
                 continue
             count += 1
+
+        if abnormal == 1:
+            print('File %s contains abnormal ECG values, '
+                  'max and min may be skewed' % i)
+        if discard > 0:
+            print('File %s has bad data' % i)
+            print('%i lines discarded' % discard)
 
     return timelist, voltagelist
 
