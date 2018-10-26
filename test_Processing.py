@@ -18,8 +18,8 @@ def test_fileparser(i, timecheck, voltagecheck, qualitylist):
     :param timecheck: List of correct time values
     :param voltagecheck: List of correct voltage values
     :param qualitylist: Quality list for calling the parser
-    :return time: List containing the time values
-    :return voltage: List containing the voltage values
+    :returns time: List containing the time values
+    :returns voltage: List containing the voltage values
     """
     from Processing import fileparser
 
@@ -75,10 +75,10 @@ def test_differentiator():
     in the middle of the function with all 1's because this section
     of the data contains all real numbers.
 
-    :return time: List of the time values
-    :return voltage: List of the voltage values
-    :return timelen: Length of the time list
-    :return diff_vec: Vector of the derivative values
+    :returns time: List of the time values
+    :returns voltage: List of the voltage values
+    :returns timelen: Length of the time list
+    :returns diff_vec: Vector of the derivative values
     """
     from Processing import fileparser
     from Processing import differentiator
@@ -118,10 +118,10 @@ def test_beatcounter():
     This method tests the beat counter using the data that was generated
     from the short segment of test data in the previous test.
 
-    :return beatcount: Number of beats detected
-    :return beat_time: Time of all of the beats
-    :return time: List of time values
-    :return timelen: Length of the time list
+    :returns beatcount: Number of beats detected
+    :returns beat_time: Time of all of the beats
+    :returns time: List of time values
+    :returns timelen: Length of the time list
     """
     test_time = [0.2]
     from Processing import beatcounter
@@ -160,7 +160,6 @@ def test_jsonout():
     This method determines whether the output that is created is in true
     json format.
 
-    :return:
     """
     from Processing import jsonout
     from Processing import fileprocessor
