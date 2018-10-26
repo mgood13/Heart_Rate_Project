@@ -50,7 +50,6 @@ def fileparser(i, qualitylist):
     voltagelist = []
     count = 0
 
-
     with open(i, 'r') as csv1:
         abnormal = 0
         discard = 0
