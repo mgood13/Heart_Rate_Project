@@ -1,6 +1,6 @@
 import csv
 from Reader import filereader
-import numpy as np
+import numpy
 import json
 import os.path
 
@@ -17,17 +17,17 @@ def fileprocessor():
     beat_time = []
     metrics = {}
 
-#Determines the number of files that are expected
+# Determines the number of files that are expected
     total = inputdictionary.pop('FileNumber')
 
-#Loops through each of the files
+# Loops through each of the files
     for i in inputdictionary:
 
         qualitylist = inputdictionary[i]
         timelist, voltagelist = fileparser(i, qualitylist)
 
-
-        minvolt, maxvolt, duration, timelen = ecgmathcalc(timelist, voltagelist)
+        minvolt, maxvolt, duration, timelen = \
+            ecgmathcalc(timelist, voltagelist)
 
         diff_vec = differentiator(timelen, voltagelist, timelist)
 
@@ -38,12 +38,12 @@ def fileprocessor():
         metrics['voltage_extremes'] = (minvolt, maxvolt)
         metrics['duration'] = duration
         metrics['num_beats'] = beatcount
-        # NO LONGER A NUMPY ARRAY
-        beat_time_array = beat_time
+        beat_time_array = numpy.array(beat_time)
         metrics['beats'] = beat_time_array
         metrics['mean_hr_bpm'] = heartrate
-        jsonout(i, metrics)
-    return metrics
+        outputstr = jsonout(i, metrics)
+    return i, metrics
+
 
 def fileparser(i, qualitylist):
     timelist = []
@@ -55,7 +55,7 @@ def fileparser(i, qualitylist):
 
     # Populates the lists for time and voltage
         for row in reader:
-            if(qualitylist[count] == 1):
+            if qualitylist[count] == 1:
                 timelist.append(float(row[0]))
                 voltagelist.append(float(row[1]))
             else:
@@ -69,15 +69,15 @@ def ecgmathcalc(timelist, voltagelist):
     duration = 0
     timelen = len(timelist)
 
-    #Determines Min and Max voltages in the file
+    # Determines Min and Max voltages in the file
     minvolt = min(voltagelist)
 
     maxvolt = max(voltagelist)
 
-
     # Determines duration of input signal
     duration = timelist[timelen-1] - timelist[0]
     return minvolt, maxvolt, duration, timelen
+
 
 def differentiator(timelen, voltagelist, timelist):
     # Takes the derivative of the signal for the threshold determination
@@ -85,7 +85,8 @@ def differentiator(timelen, voltagelist, timelist):
 
     for x in range(0, timelen):
         if x < (timelen - 1):
-            diff_vec.append((voltagelist[x + 1] - voltagelist[x]) / (timelist[x + 1] - timelist[x]))
+            diff_vec.append((voltagelist[x + 1] - voltagelist[x]) /
+                            (timelist[x + 1] - timelist[x]))
 
     return diff_vec
 
@@ -98,7 +99,8 @@ def beatcounter(timelen, diff_vec, timelist):
     beat_time = []
     for n in range(0, (timelen - 1)):
         if n > 1:
-            if diff_vec[n] > threshold and diff_vec[n - 1] < threshold and diff_vec[n-2] < threshold:
+            if diff_vec[n] > threshold and diff_vec[n - 1] < threshold \
+                    and diff_vec[n-2] < threshold:
                 beatcount += 1
                 beat_time.append(timelist[n])
 
@@ -106,21 +108,24 @@ def beatcounter(timelen, diff_vec, timelist):
 
 
 def heartratecalc(beatcount, beat_time, duration, usermin=1):
-    avg_HR = 0
+    avg_hr = 0
     usersec = usermin * 60
-    if (usersec > duration):
+    if usersec > duration:
         ratio = duration/usersec
-        avg_HR = beatcount/ratio/usermin
+        avg_hr = beatcount/ratio/usermin
     else:
         count = 0
         for n in beat_time:
-            if (n < usersec):
+            if n < usersec:
                 count += 1
-        avg_HR = count/usermin
+        avg_hr = count/usermin
 
-    return avg_HR
+    return avg_hr
+
 
 def jsonout(i, metrics):
+    temp = list(metrics['beats'])
+    metrics['beats'] = temp
     outputstr = json.dumps(metrics, indent=4)
     templen = len(i)
     temp = i[0:templen-4]
@@ -128,7 +133,7 @@ def jsonout(i, metrics):
     finalfile = os.path.join('./output', filename)
     f = open(finalfile, 'w')
     f.write(outputstr)
-
+    return outputstr
 
 
 if __name__ == "__main__":

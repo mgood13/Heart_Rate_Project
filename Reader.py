@@ -5,7 +5,8 @@ import os
 def filereader():
     """The main file reader function.
 
-    :return finaldictionary: The dictionary containing the file names and their dialect for the csv reader
+    :return finaldictionary: The dictionary containing the file names
+    and their dialect for the csv reader
     """
     outdictionary = {}
     finaldictionary = {}
@@ -50,14 +51,16 @@ def csvchecker(files):
                 outdictionary[f] = dialect
                 count += 1
     outdictionary['FileNumber'] = count
-    # Return dictionary with file names, delimiter types, and number of valid files
+    # Return dictionary with file names, qualitylist, and number of valid files
     return outdictionary
 
 
 def floatcheck(indictionary):
-    """Method that checks if every element in the csv is a number (or can be made one) and marks the rows with errors
+    """Method that checks if every element in the csv can be converted to a number
+    and marks the rows with errors
 
-    :param indictionary: Dictionary that contains all real .csv file names and their dialect
+    :param indictionary: Dictionary that contains all real .csv file names
+     and a list describing the validity of each row
     :return indictionary: Dictionary containing all .csv files as keys.
     The values are a list indicating good (1) and bad (0) rows.
     """

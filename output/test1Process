@@ -1,0 +1,13 @@
+{
+    "Original File Name": "test1Process.csv",
+    "voltage_extremes": [
+        0.0,
+        2.0
+    ],
+    "duration": 9.0,
+    "num_beats": 1,
+    "beats": [
+        4.0
+    ],
+    "mean_hr_bpm": 6.666666666666667
+}

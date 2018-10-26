@@ -1,0 +1,13 @@
+{
+    "Original File Name": "test_data1_short.csv",
+    "voltage_extremes": [
+        -0.485,
+        0.84
+    ],
+    "duration": 0.275,
+    "num_beats": 1,
+    "beats": [
+        0.2
+    ],
+    "mean_hr_bpm": 218.1818181818182
+}
