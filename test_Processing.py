@@ -1,4 +1,5 @@
 import pytest
+import json
 
 
 @pytest.mark.parametrize("i, timecheck, voltagecheck, qualitylist", [
@@ -79,18 +80,33 @@ def test_differentiator():
 
 
 def test_beatcounter():
-    from Reader import filereader
     test_time = [0.2]
     from Processing import beatcounter
     time, voltage, timelen, diff_vec = test_differentiator()
     beatcount, beat_time = beatcounter(timelen, diff_vec, time)
     assert beatcount == 1
     assert beat_time == test_time
-
-    # Unclear how to test more
-
-
-# def test_heartratecalc():
+    return beatcount, beat_time, time, timelen
 
 
-# def test_jsonout():
+def test_heartratecalc():
+    from Processing import heartratecalc
+    from pytest import approx
+    beatcount, beat_time, time, timelen = test_beatcounter()
+    duration = time[timelen-1] - time[0]
+    assert heartratecalc(beatcount, beat_time, duration, 1) == \
+           approx(218.1818)
+
+    beatcount = 5
+    beat_time = [3.4, 5.8, 15.7, 30, 65]
+    duration = 70
+    # The first beats are more rapid -> shorten the window, higher HR
+    assert heartratecalc(beatcount, beat_time, duration, 1) == 4
+    assert heartratecalc(beatcount, beat_time, duration, 0.5) == 6
+
+def test_jsonout():
+    from Processing import jsonout
+    from Processing import fileprocessor
+    i, metrics = fileprocessor()
+    outputstr = jsonout(i,metrics)
+    assert json.loads(outputstr)

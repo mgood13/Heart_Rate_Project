@@ -1,6 +1,6 @@
 import csv
 from Reader import filereader
-import numpy as np
+import numpy
 import json
 import os.path
 
@@ -38,12 +38,11 @@ def fileprocessor():
         metrics['voltage_extremes'] = (minvolt, maxvolt)
         metrics['duration'] = duration
         metrics['num_beats'] = beatcount
-        # NO LONGER A NUMPY ARRAY
-        beat_time_array = beat_time
+        beat_time_array = numpy.array(beat_time)
         metrics['beats'] = beat_time_array
         metrics['mean_hr_bpm'] = heartrate
-        jsonout(i, metrics)
-    return metrics
+        outputstr = jsonout(i, metrics)
+    return i, metrics
 
 
 def fileparser(i, qualitylist):
@@ -125,6 +124,8 @@ def heartratecalc(beatcount, beat_time, duration, usermin=1):
 
 
 def jsonout(i, metrics):
+    temp = list(metrics['beats'])
+    metrics['beats'] = temp
     outputstr = json.dumps(metrics, indent=4)
     templen = len(i)
     temp = i[0:templen-4]
@@ -132,6 +133,7 @@ def jsonout(i, metrics):
     finalfile = os.path.join('./output', filename)
     f = open(finalfile, 'w')
     f.write(outputstr)
+    return outputstr
 
 
 if __name__ == "__main__":
