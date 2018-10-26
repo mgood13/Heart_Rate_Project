@@ -104,6 +104,7 @@ def test_heartratecalc():
     assert heartratecalc(beatcount, beat_time, duration, 1) == 4
     assert heartratecalc(beatcount, beat_time, duration, 0.5) == 6
 
+
 def test_jsonout():
     from Processing import jsonout
     from Processing import fileprocessor
