@@ -158,7 +158,7 @@ def differentiator(timelen, voltagelist, timelist):
     return diff_vec
 
 
-def beatcounter(timelen, diff_vec, timelist, scaling = 0.5):
+def beatcounter(timelen, diff_vec, timelist, scaling=0.5):
     """Method that performs beat detection from the derivative
 
     This method uses the derivative list calculated in the previous method
@@ -173,6 +173,7 @@ def beatcounter(timelen, diff_vec, timelist, scaling = 0.5):
     :param timelen: Length of the time list
     :param diff_vec: List containing the derivative values
     :param timelist: List containing the time values
+    :param scaling: Scaling factor for threshold
     :return beatcount: The number of beats detected
     :return beat_time: The time of all the beats detected
     """
