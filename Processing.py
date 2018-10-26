@@ -26,7 +26,8 @@ def fileprocessor():
         qualitylist = inputdictionary[i]
         timelist, voltagelist = fileparser(i, qualitylist)
 
-        minvolt, maxvolt, duration, timelen = ecgmathcalc(timelist, voltagelist)
+        minvolt, maxvolt, duration, timelen = \
+            ecgmathcalc(timelist, voltagelist)
 
         diff_vec = differentiator(timelen, voltagelist, timelist)
 
@@ -85,7 +86,8 @@ def differentiator(timelen, voltagelist, timelist):
 
     for x in range(0, timelen):
         if x < (timelen - 1):
-            diff_vec.append((voltagelist[x + 1] - voltagelist[x]) / (timelist[x + 1] - timelist[x]))
+            diff_vec.append((voltagelist[x + 1] - voltagelist[x])
+                            / (timelist[x + 1] - timelist[x]))
 
     return diff_vec
 

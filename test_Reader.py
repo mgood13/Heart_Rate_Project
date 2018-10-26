@@ -22,7 +22,7 @@ def test_csvfinder():
 def test_csvchecker():
     """Tests the csvchecker function
 
-    :return check_files: Dictionary of files that have been checked to be valid .csv files
+    :return check_files: Dictionary of valid csv files
     """
     from Reader import csvchecker
     test_files = test_csvfinder()
@@ -50,5 +50,3 @@ def test_floatcheck():
     assert 'words.csv' not in float_files
     assert 'test1.csv' not in float_files
     assert 'test_data1.csv' in float_files
-
-
