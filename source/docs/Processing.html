@@ -1,0 +1,319 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Processing module &#8212; Mgood13_bme590hrm v1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Processing">
+<span id="processing-module"></span><h1>Processing module<a class="headerlink" href="#module-Processing" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="Processing.beatcounter">
+<code class="descclassname">Processing.</code><code class="descname">beatcounter</code><span class="sig-paren">(</span><em>timelen</em>, <em>diff_vec</em>, <em>timelist</em>, <em>scaling=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#Processing.beatcounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that performs beat detection from the derivative</p>
+<p>This method uses the derivative list calculated in the previous method
+and performs threshold detection. The threshold is set at a default
+of 0.5 of the max derivative peak but can be adjusted by the user by
+adding an input to the original function call. To ensure that the
+threshold doesn’t double count a single peak if it’s above the threshold
+for a few values it makes sure that the point that is counted is alone
+and that the previous 2 points are not above threshold. When a beat is
+deteced the time of the beat is placed into a list as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timelen</strong> – Length of the time list</li>
+<li><strong>diff_vec</strong> – List containing the derivative values</li>
+<li><strong>timelist</strong> – List containing the time values</li>
+<li><strong>scaling</strong> – Scaling factor for threshold</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returns beatcount:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first">The number of beats detected</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returns beat_time:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">The time of all the beats detected</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Processing.differentiator">
+<code class="descclassname">Processing.</code><code class="descname">differentiator</code><span class="sig-paren">(</span><em>timelen</em>, <em>voltagelist</em>, <em>timelist</em><span class="sig-paren">)</span><a class="headerlink" href="#Processing.differentiator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that performs a derivative for beat detection</p>
+<p>This method actually only performs the derivative, the beat detection
+is calculated elsewhere. This is basically just to sharpen the differences
+between the QRS complex and the other parts of the ECG for simpler
+thresholding. This also sort of eliminates the need for accounting for
+low frequency noise because the derivative isn’t affected by it. It
+returns values that are derivatives of the original signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timelen</strong> – Length of the time list</li>
+<li><strong>voltagelist</strong> – List containing voltage values</li>
+<li><strong>timelist</strong> – List containing time values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returns diff_vec:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">List containing the values of the derivative</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Processing.ecgmathcalc">
+<code class="descclassname">Processing.</code><code class="descname">ecgmathcalc</code><span class="sig-paren">(</span><em>timelist</em>, <em>voltagelist</em><span class="sig-paren">)</span><a class="headerlink" href="#Processing.ecgmathcalc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that performs the basic math functions</p>
+<p>This method takes the input lists from the fileparser and then obtains
+the basic metrics. These include the max and min and duration. It also
+obtains the length of the time list which is used in later calculations.
+Max and min are both obtained using built in python functions and duration
+is calculated by subtracting the endpoints.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timelist</strong> – List of time values</li>
+<li><strong>voltagelist</strong> – List of voltage values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returns minvolt:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first">Minimum voltage value recorded</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returns maxvolt:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first">Maximum voltage value recorded</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returns duration:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first">Duration of the ECG recording</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returns timelen:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">Length of the time list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Processing.fileparser">
+<code class="descclassname">Processing.</code><code class="descname">fileparser</code><span class="sig-paren">(</span><em>i</em>, <em>qualitylist</em><span class="sig-paren">)</span><a class="headerlink" href="#Processing.fileparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that pulls data from input files for use in calculation</p>
+<p>This method takes the file name and a list which was created in the
+file reader which determines the validity of a given line. Basically
+if the line contains bad data then it is discarded in this method. It
+also creates printed output related to the files that it reads. If it
+finds that there was a bad row then it will point this out to the user
+and also print out the number of rows that were discarded. If the ECG
+values are out of bounds (&gt;10mV) then it will inform the user that the
+file in question contains out of bounds data and that the max and min
+will be skewed as a result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>i</strong> – The file name</li>
+<li><strong>qualitylist</strong> – The list with a value for each row, 0-bad, 1-good</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returns timelist:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first">List with the time values</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returns voltagelist:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">List with the voltage values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Processing.fileprocessor">
+<code class="descclassname">Processing.</code><code class="descname">fileprocessor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Processing.fileprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main method that runs the processor function</p>
+<p>This function runs our read program and then runs its own various functions
+it ultimately outputs all the relevant json files named after the csv file
+where the data originated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Returns metrics:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">Dictionary containing all the calculated metrics</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Processing.heartratecalc">
+<code class="descclassname">Processing.</code><code class="descname">heartratecalc</code><span class="sig-paren">(</span><em>beatcount</em>, <em>beat_time</em>, <em>duration</em>, <em>usermin=1</em><span class="sig-paren">)</span><a class="headerlink" href="#Processing.heartratecalc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that determines the average heart rate over a given interval</p>
+<p>This method calculates the heart rate based upon a number of minutes given
+when the function is called (with a default of 1 minute). The function
+basically determines if the input number of minutes is longer than the
+duration of the ECG measurement and then creates a ratio between the
+input and the duration. If it is longer than the duration then this ratio
+is multiplied with the total number of beats to get the extrapolated
+heart rate. If the number is shorter than the duration then the function
+runs through the time of all beats to determine how many have passed in
+the given interval to then calculate the heart rate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>beatcount</strong> – The number of beats detected</li>
+<li><strong>beat_time</strong> – The time of all the beats detected</li>
+<li><strong>duration</strong> – Duration of the ECG recording</li>
+<li><strong>usermin</strong> – Number of minutes for the HR calculation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns avg_hr:</th><td class="field-body"><p class="first last">The calculated average heart rate</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Processing.jsonout">
+<code class="descclassname">Processing.</code><code class="descname">jsonout</code><span class="sig-paren">(</span><em>i</em>, <em>metrics</em><span class="sig-paren">)</span><a class="headerlink" href="#Processing.jsonout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that produces the json string and output files</p>
+<p>This method creates a json string and then returns it and also
+prints it to a new file. The printing function takes the name
+of the file the data came from and then clips off the .csv
+ending and doesn’t add a new extension. So test1.csv -&gt; test1</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>i</strong> – The file name</li>
+<li><strong>metrics</strong> – The dictionary containing the calculated metrics</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returns outputstr:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">The json string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Mgood13_bme590hrm</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Michael Good.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Processing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -12,7 +12,7 @@ def fileprocessor():
     it ultimately outputs all the relevant json files named after the csv file
     where the data originated.
 
-    :return metrics: Dictionary containing all the calculated metrics
+    :returns metrics: Dictionary containing all the calculated metrics
     """
     inputdictionary = filereader()
     count = 0
@@ -68,8 +68,8 @@ def fileparser(i, qualitylist):
 
     :param i: The file name
     :param qualitylist: The list with a value for each row, 0-bad, 1-good
-    :return timelist: List with the time values
-    :return voltagelist: List with the voltage values
+    :returns timelist: List with the time values
+    :returns voltagelist: List with the voltage values
     """
     timelist = []
     voltagelist = []
@@ -114,10 +114,10 @@ def ecgmathcalc(timelist, voltagelist):
 
     :param timelist: List of time values
     :param voltagelist: List of voltage values
-    :return minvolt: Minimum voltage value recorded
-    :return maxvolt: Maximum voltage value recorded
-    :return duration: Duration of the ECG recording
-    :return timelen: Length of the time list
+    :returns minvolt: Minimum voltage value recorded
+    :returns maxvolt: Maximum voltage value recorded
+    :returns duration: Duration of the ECG recording
+    :returns timelen: Length of the time list
     """
     duration = 0
     timelen = len(timelist)
@@ -145,7 +145,7 @@ def differentiator(timelen, voltagelist, timelist):
     :param timelen: Length of the time list
     :param voltagelist: List containing voltage values
     :param timelist: List containing time values
-    :return diff_vec: List containing the values of the derivative
+    :returns diff_vec: List containing the values of the derivative
     """
     # Takes the derivative of the signal for the threshold determination
     diff_vec = []
@@ -174,8 +174,8 @@ def beatcounter(timelen, diff_vec, timelist, scaling=0.5):
     :param diff_vec: List containing the derivative values
     :param timelist: List containing the time values
     :param scaling: Scaling factor for threshold
-    :return beatcount: The number of beats detected
-    :return beat_time: The time of all the beats detected
+    :returns beatcount: The number of beats detected
+    :returns beat_time: The time of all the beats detected
     """
     beatcount = 0
     diffmax = max(diff_vec)
@@ -208,7 +208,7 @@ def heartratecalc(beatcount, beat_time, duration, usermin=1):
     :param beat_time: The time of all the beats detected
     :param duration: Duration of the ECG recording
     :param usermin: Number of minutes for the HR calculation
-    :return avg_hr: The calculated average heart rate
+    :returns avg_hr: The calculated average heart rate
     """
     avg_hr = 0
     usersec = usermin * 60
@@ -236,7 +236,7 @@ def jsonout(i, metrics):
 
     :param i: The file name
     :param metrics: The dictionary containing the calculated metrics
-    :return outputstr: The json string
+    :returns outputstr: The json string
     """
     temp = list(metrics['beats'])
     metrics['beats'] = temp
