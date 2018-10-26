@@ -15,7 +15,8 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('/Users/Michael/Desktop/'
-                                   'Duke/Fall_2018/590.06/Heart_Rate_Project/source'))
+                                   'Duke/Fall_2018/590.06/Heart_Rate_Project/'
+                                   'source'))
 sys.path.insert(0, os.path.abspath('/Users/Michael/Desktop/'
                                    'Duke/Fall_2018/590.06/Heart_Rate_Project'))
 
