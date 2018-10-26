@@ -6,6 +6,14 @@ import os.path
 
 
 def fileprocessor():
+    """The main method that runs the processor function
+
+    This function runs our read program and then runs its own various functions
+    it ultimately outputs all the relevant json files named after the csv file
+    where the data originated.
+
+    :return metrics: Dictionary containing all the calculated metrics
+    """
     inputdictionary = filereader()
     count = 0
     timelist = []
@@ -46,6 +54,23 @@ def fileprocessor():
 
 
 def fileparser(i, qualitylist):
+    """Method that pulls data from input files for use in calculation
+
+    This method takes the file name and a list which was created in the
+    file reader which determines the validity of a given line. Basically
+    if the line contains bad data then it is discarded in this method. It
+    also creates printed output related to the files that it reads. If it
+    finds that there was a bad row then it will point this out to the user
+    and also print out the number of rows that were discarded. If the ECG
+    values are out of bounds (>10mV) then it will inform the user that the
+    file in question contains out of bounds data and that the max and min
+    will be skewed as a result.
+
+    :param i: The file name
+    :param qualitylist: The list with a value for each row, 0-bad, 1-good
+    :return timelist: List with the time values
+    :return voltagelist: List with the voltage values
+    """
     timelist = []
     voltagelist = []
     count = 0
@@ -60,7 +85,7 @@ def fileparser(i, qualitylist):
             if qualitylist[count] == 1:
                 timelist.append(float(row[0]))
                 voltagelist.append(float(row[1]))
-                if float(row[1]) > 20:
+                if float(row[1]) > 10:
                     abnormal = 1
             else:
                 discard += 1
@@ -79,6 +104,21 @@ def fileparser(i, qualitylist):
 
 
 def ecgmathcalc(timelist, voltagelist):
+    """Method that performs the basic math functions
+
+    This method takes the input lists from the fileparser and then obtains
+    the basic metrics. These include the max and min and duration. It also
+    obtains the length of the time list which is used in later calculations.
+    Max and min are both obtained using built in python functions and duration
+    is calculated by subtracting the endpoints.
+
+    :param timelist: List of time values
+    :param voltagelist: List of voltage values
+    :return minvolt: Minimum voltage value recorded
+    :return maxvolt: Maximum voltage value recorded
+    :return duration: Duration of the ECG recording
+    :return timelen: Length of the time list
+    """
     duration = 0
     timelen = len(timelist)
 
@@ -93,6 +133,20 @@ def ecgmathcalc(timelist, voltagelist):
 
 
 def differentiator(timelen, voltagelist, timelist):
+    """Method that performs a derivative for beat detection
+
+    This method actually only performs the derivative, the beat detection
+    is calculated elsewhere. This is basically just to sharpen the differences
+    between the QRS complex and the other parts of the ECG for simpler
+    thresholding. This also sort of eliminates the need for accounting for
+    low frequency noise because the derivative isn't affected by it. It
+    returns values that are derivatives of the original signal.
+
+    :param timelen: Length of the time list
+    :param voltagelist: List containing voltage values
+    :param timelist: List containing time values
+    :return diff_vec: List containing the values of the derivative
+    """
     # Takes the derivative of the signal for the threshold determination
     diff_vec = []
 
@@ -104,9 +158,25 @@ def differentiator(timelen, voltagelist, timelist):
     return diff_vec
 
 
-def beatcounter(timelen, diff_vec, timelist):
+def beatcounter(timelen, diff_vec, timelist, scaling = 0.5):
+    """Method that performs beat detection from the derivative
+
+    This method uses the derivative list calculated in the previous method
+    and performs threshold detection. The threshold is set at a default
+    of 0.5 of the max derivative peak but can be adjusted by the user by
+    adding an input to the original function call. To ensure that the
+    threshold doesn't double count a single peak if it's above the threshold
+    for a few values it makes sure that the point that is counted is alone
+    and that the previous 2 points are not above threshold. When a beat is
+    deteced the time of the beat is placed into a list as well.
+
+    :param timelen: Length of the time list
+    :param diff_vec: List containing the derivative values
+    :param timelist: List containing the time values
+    :return beatcount: The number of beats detected
+    :return beat_time: The time of all the beats detected
+    """
     beatcount = 0
-    scaling = 0.5
     diffmax = max(diff_vec)
     threshold = diffmax * scaling
     beat_time = []
@@ -121,6 +191,24 @@ def beatcounter(timelen, diff_vec, timelist):
 
 
 def heartratecalc(beatcount, beat_time, duration, usermin=1):
+    """Method that determines the average heart rate over a given interval
+
+    This method calculates the heart rate based upon a number of minutes given
+    when the function is called (with a default of 1 minute). The function
+    basically determines if the input number of minutes is longer than the
+    duration of the ECG measurement and then creates a ratio between the
+    input and the duration. If it is longer than the duration then this ratio
+    is multiplied with the total number of beats to get the extrapolated
+    heart rate. If the number is shorter than the duration then the function
+    runs through the time of all beats to determine how many have passed in
+    the given interval to then calculate the heart rate.
+
+    :param beatcount: The number of beats detected
+    :param beat_time: The time of all the beats detected
+    :param duration: Duration of the ECG recording
+    :param usermin: Number of minutes for the HR calculation
+    :return avg_hr: The calculated average heart rate
+    """
     avg_hr = 0
     usersec = usermin * 60
     if usersec > duration:
@@ -137,6 +225,18 @@ def heartratecalc(beatcount, beat_time, duration, usermin=1):
 
 
 def jsonout(i, metrics):
+    """Method that produces the json string and output files
+
+    This method creates a json string and then returns it and also
+    prints it to a new file. The printing function takes the name
+    of the file the data came from and then clips off the .csv
+    ending and doesn't add a new extension. So test1.csv -> test1
+
+
+    :param i: The file name
+    :param metrics: The dictionary containing the calculated metrics
+    :return outputstr: The json string
+    """
     temp = list(metrics['beats'])
     metrics['beats'] = temp
     outputstr = json.dumps(metrics, indent=4)

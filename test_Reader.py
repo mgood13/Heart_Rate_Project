@@ -1,5 +1,5 @@
 def test_csvfinder():
-    """Tests the csvfinder function
+    """Tests that the finder finds all the correct files
 
     :return test_files: List of .csv files
     """
@@ -20,7 +20,7 @@ def test_csvfinder():
 
 
 def test_csvchecker():
-    """Tests the csvchecker function
+    """Tests that the check function discards and keeps correct files
 
     :return check_files: Dictionary of valid csv files
     """
@@ -40,7 +40,7 @@ def test_csvchecker():
 
 
 def test_floatcheck():
-    """Tests the floatcheck function
+    """Tests to ensure that certain files are removed from the csv file list
 
     :return:
     """
