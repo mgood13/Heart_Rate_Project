@@ -130,7 +130,7 @@ def jsonout(i, metrics):
     templen = len(i)
     temp = i[0:templen-4]
     filename = temp
-    finalfile = os.path.join('/output', filename)
+    finalfile = os.path.join('./output', filename)
     f = open(finalfile, 'w')
     f.write(outputstr)
     return outputstr
