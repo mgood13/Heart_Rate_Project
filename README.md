@@ -31,4 +31,20 @@ names to toss out bad rows. It also notifies the user at this point if any and h
 thrown out and if the values recorded in the lists were inside the normal bounds for an ECG. Then it
 calculates the minimum voltage, maximum voltage, and the duration of the recording. 
 
-Next it takes the derivative of the input graph using a simple, discrete slope calculator. 
+Next it takes the derivative of the input graph using a simple, discrete slope calculator. Because the QRS
+complex is typically much sharper than the surrounding features this amplifies the differences and allows
+for an easier time thresholding for beat detection. This method also eliminates some of the issues with
+drift of a signal because the slope in between two points will likely not shift enough to cause an error
+in a derivative threshold whereas you may run into problems thresholding the raw signal.
+
+The beat detection function can be modulated by the user for a different threshold if desired. Currently
+the method detects the largest derivative value then sets the threshold at 50% of that value. This value
+of 50% can be adjusted from (0,1).
+
+The next function is the heart rate detector function. This calculates the heart rate based upon an input
+number of minutes. It currently has a default of 1 minute but can be adjusted by the user to really anything.
+
+The final function outputs a json file that contains the dictionary of all the calculations made by the
+rest of the file. It changes the numpy array back to a list (because json can't convert a numpy array into
+a json string, who knew?). The output is a file that is titled the same as the input without the .csv file
+extension. For example, *test_data1.csv -> test_data1*. 
