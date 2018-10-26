@@ -9,6 +9,18 @@ import json
 
     ])
 def test_fileparser(i, timecheck, voltagecheck, qualitylist):
+    """Tests to ensure the parser extracts data properly
+
+    This method uses some dummy data in the file test1Process.csv to
+    determine whether the fileparser is working.
+
+    :param i: The filename
+    :param timecheck: List of correct time values
+    :param voltagecheck: List of correct voltage values
+    :param qualitylist: Quality list for calling the parser
+    :return time: List containing the time values
+    :return voltage: List containing the voltage values
+    """
     from Processing import fileparser
 
     time, voltage = fileparser(i, qualitylist)
@@ -24,6 +36,15 @@ def test_fileparser(i, timecheck, voltagecheck, qualitylist):
 
     ])
 def test_ecgmathcalc(time, voltage, calccheck):
+    """Method that checks the function of the simple math method
+
+    This method uses dummy data presented above and also the data from
+    the first test to check the simple math.
+
+    :param time: List of the time values
+    :param voltage: List of the voltage values
+    :param calccheck: List of correct values to check the calculations
+    """
     qualitylist = []
     from Processing import ecgmathcalc
     from Processing import fileparser
@@ -47,6 +68,18 @@ def test_ecgmathcalc(time, voltage, calccheck):
 
 
 def test_differentiator():
+    """This method tests the function of the derivative method
+
+    This method uses a short segment of one of the test files to assess
+    the function of the derivative method. It generates the qualitylist
+    in the middle of the function with all 1's because this section
+    of the data contains all real numbers.
+
+    :return time: List of the time values
+    :return voltage: List of the voltage values
+    :return timelen: Length of the time list
+    :return diff_vec: Vector of the derivative values
+    """
     from Processing import fileparser
     from Processing import differentiator
     from pytest import approx
@@ -80,6 +113,16 @@ def test_differentiator():
 
 
 def test_beatcounter():
+    """Test for the beat counter
+
+    This method tests the beat counter using the data that was generated
+    from the short segment of test data in the previous test.
+
+    :return beatcount: Number of beats detected
+    :return beat_time: Time of all of the beats
+    :return time: List of time values
+    :return timelen: Length of the time list
+    """
     test_time = [0.2]
     from Processing import beatcounter
     time, voltage, timelen, diff_vec = test_differentiator()
@@ -90,6 +133,12 @@ def test_beatcounter():
 
 
 def test_heartratecalc():
+    """Test for the average heart rate calculator
+
+    This method applies the heart rate calculator to the data from the
+    above test and then also from a very short example data set of beats.
+
+    """
     from Processing import heartratecalc
     from pytest import approx
     beatcount, beat_time, time, timelen = test_beatcounter()
@@ -106,6 +155,13 @@ def test_heartratecalc():
 
 
 def test_jsonout():
+    """Tests the validity of the json output
+
+    This method determines whether the output that is created is in true
+    json format.
+
+    :return:
+    """
     from Processing import jsonout
     from Processing import fileprocessor
     i, metrics = fileprocessor()

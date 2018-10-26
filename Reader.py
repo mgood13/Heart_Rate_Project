@@ -22,7 +22,7 @@ def csvfinder(direc='.'):
     """Method that finds all .csv files in a given directory.
 
     :param direc: The desired directory to find files in.
-    :return files: The list of .csv files.
+    :returns files: The list of .csv files.
     """
     # This method finds all files that end in .csv
     files = [f for f in os.listdir(direc) if f.endswith(".csv")]
@@ -33,7 +33,7 @@ def csvchecker(files):
     """Method that checks every file for being a true .csv with no other delimiters
 
     :param files: The list of .csv files in the directory
-    :return:
+    :returns outdictionary: Dictionary of the csv files
     """
     # This method checks all .csv files to see if they are valid csv files
     outdictionary = {}
@@ -61,7 +61,7 @@ def floatcheck(indictionary):
 
     :param indictionary: Dictionary that contains all real .csv file names
      and a list describing the validity of each row
-    :return indictionary: Dictionary containing all .csv files as keys.
+    :returns indictionary: Dictionary containing all .csv files as keys.
     The values are a list indicating good (1) and bad (0) rows.
     """
 
