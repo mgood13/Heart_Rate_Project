@@ -95,7 +95,7 @@ def test_heartratecalc():
     beatcount, beat_time, time, timelen = test_beatcounter()
     duration = time[timelen-1] - time[0]
     assert heartratecalc(beatcount, beat_time, duration, 1) == \
-           approx(218.1818)
+        approx(218.1818)
 
     beatcount = 5
     beat_time = [3.4, 5.8, 15.7, 30, 65]
@@ -108,5 +108,5 @@ def test_jsonout():
     from Processing import jsonout
     from Processing import fileprocessor
     i, metrics = fileprocessor()
-    outputstr = jsonout(i,metrics)
+    outputstr = jsonout(i, metrics)
     assert json.loads(outputstr)
